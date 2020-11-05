@@ -11,7 +11,7 @@ This repository generates multi-view data (as used in [MulMON](https://github.co
   
   
 ## Cite
-Please cite the papers if you find the data generator useful:
+Please cite the paper if you find the data generator useful:
 ```latex
 @inproceedings{nanbo2020mulmon,
       title={Learning Object-Centric Representations of Multi-Object Scenes from Multiple Views}, 
