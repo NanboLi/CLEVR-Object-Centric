@@ -1,10 +1,10 @@
 # CLEVR-MultiView
-  
+
+Multi-view CLEVR datasets generator.  
 ### (to be released soon ...)
   
-  
-This repository generates multi-view data (as used in [MulMON](https://github.com/NanboLi/MulMON)) for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes.  
-  
+This repository generates multi-view data (as used in [MulMON](https://github.com/NanboLi/MulMON)) for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. 
+
   
   
   
