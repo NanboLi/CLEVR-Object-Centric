@@ -1,4 +1,4 @@
-# CLEVR-MultiView
+# CLEVR-Object-Centric
 
 Multi-view CLEVR datasets generator.  
 ### (Appreciate your patience, almost ready for release ...)
