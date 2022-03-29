@@ -1,28 +1,28 @@
 # CLEVR-Object-Centric (CLROC) 
 CLEVR Data Generators for **Object-Centric Representation Learning**.   
- 
+
 
 <p float="left">
     <img src="assets/demo_static.gif" width="400"/>  
     <img src="assets/demo_dynamic.gif" width="400"/>  
 </p>  
 
-  
+
 
 **Highlighted Features:**   (Distinctive from the original [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) generator)
 
 1. *Multi-view image observation generations* (supported by both `./static_scene_generator` and `./dynamic_scene_generator`)
 2. *Multi-view-moving-moving camera observations of dynamic scenes* (with collisions, see `./dynamic_scene_generator`)  
-  
 
-### Acknowledgement  
+
+## Acknowledgement  
 
 This repository integrates two image data generators for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. The two data generators (i.e. `./static_scene_generator` and `./dynamic_scene_generator`) were originally designed for two of our NeurIPS papers [MulMON](https://github.com/NanboLi/MulMON) and [DyMON](https://proceedings.neurips.cc/paper/2021/file/593906af0d138e69f49d251d3e7cbed0-Paper.pdf) respectively. In addition, we give special thanks to Bofeng Fu and Zhixuan Lin (authors of [GSWM](https://sites.google.com/view/gswm)) for providing the initial version of the `./dynamic_scene_generator` generator.   
 
 **Please [CITE](#Cite) these papers if you find the data generators useful.**  
     
 
-### Environment 
+## Environment 
 (Only supports unix systems.) 
 
 1. Install [Blender 2.79](https://www.blender.org/download/releases/2-79/).  To verify:   
@@ -45,11 +45,17 @@ This repository integrates two image data generators for the [CLEVR](https://git
 
    ​	```conda activate CLROC```
 
-​	All set! *Now you can go to `./static_scene_generator` or `./dynamic_scene_generator` for data generation instructions.*
+​	All set! *Now you can go to `./static_scene_generator` or `./dynamic_scene_generator` for data generation instructions.*  
+
    
-   
-   
-### Cite
+
+## Contact  
+
+We constantly respond to the raised ''issues'' in terms of running the code. For further inquiries and discussions (e.g. questions about the paper), email: **nanbo.li@ed.ac.uk**.   
+
+​    
+
+## Cite
 ```latex
 @inproceedings{nanbo2020mulmon,
   title={Learning Object-Centric Representations of Multi-Object Scenes from Multiple Views},
