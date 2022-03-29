@@ -5,9 +5,9 @@ CLEVR dataset generators for **object-centric representation learning**.
 
   
 ### Acknowledgement  
-This repository integrates two image data generators for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. The two data generators (i.e. `./static_scene_generator` and `./dynamic_scene_generator`) were originally designed for two of our papers [MulMON](https://github.com/NanboLi/MulMON) and [DyMON](https://proceedings.neurips.cc/paper/2021/file/593906af0d138e69f49d251d3e7cbed0-Paper.pdf) respectively. In addition, we give special thanks to Bofeng Fu and Zhixuan Lin (authors of [GSWM](https://sites.google.com/view/gswm)) for providing the initial version of the `./dynamic_scene_generator` generator.   
+This repository integrates two image data generators for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. The two data generators (i.e. `./static_scene_generator` and `./dynamic_scene_generator`) were originally designed for two of our NeurIPS papers [MulMON](https://github.com/NanboLi/MulMON) and [DyMON](https://proceedings.neurips.cc/paper/2021/file/593906af0d138e69f49d251d3e7cbed0-Paper.pdf) respectively. In addition, we give special thanks to Bofeng Fu and Zhixuan Lin (authors of [GSWM](https://sites.google.com/view/gswm)) for providing the initial version of the `./dynamic_scene_generator` generator.   
 
-Please [CITE](#Cite) the papers if you find the data generators useful.
+Please [CITE](#Cite) these papers if you find the data generators useful.
   
 ### Cite
 ```latex
