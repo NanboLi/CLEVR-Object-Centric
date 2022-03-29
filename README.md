@@ -52,8 +52,7 @@ This repository integrates two image data generators for the [CLEVR](https://git
 ## Contact  
 
 We constantly respond to the raised ''issues'' in terms of running the code. For further inquiries and discussions (e.g. questions about the paper), email: **nanbo.li@ed.ac.uk**.   
-
-​    
+   
 
 ## Cite
 ```latex
