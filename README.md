@@ -46,9 +46,9 @@ This repository integrates two image data generators for the [CLEVR](https://git
    ​	```conda activate CLROC```
 
 ​	All set! *Now you can go to `./static_scene_generator` or `./dynamic_scene_generator` for data generation instructions.*
-
    
-
+   
+   
 ### Cite
 ```latex
 @inproceedings{nanbo2020mulmon,
