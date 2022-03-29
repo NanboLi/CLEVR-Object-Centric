@@ -1,17 +1,14 @@
-# CLEVR-Object-Centric
+# CLEVR-Object-Centric  
+CLEVR dataset generators for **object-centric representation learning**.   
 
-Multi-view CLEVR datasets generator.  
-### (Appreciate your patience, almost ready for release ...)
-  
-This repository generates multi-view data (as used in [MulMON](https://github.com/NanboLi/MulMON)) for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. 
+## (ALMOST READY ..)
 
   
+## Acknowledgement  
+This repository integrates two image data generators for the [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) scenes. The two data generators (i.e. `./static_scene_generator` and `./dynamic_scene_generator`) were originally designed for two of our papers [MulMON](https://github.com/NanboLi/MulMON) and [DyMON](https://proceedings.neurips.cc/paper/2021/file/593906af0d138e69f49d251d3e7cbed0-Paper.pdf) respectively. In addition, we give special thanks to Bofeng Fu and Zhixuan Lin (authors of [GSWM](https://sites.google.com/view/gswm)) for providing the initial version of the `./dynamic_scene_generator` generator. 
   
-  
-  
-  
-## Cite
-Please cite the paper if you find the data generator useful:
+### Cite
+Please cite the papers if you find the data generators useful:
 ```latex
 @inproceedings{nanbo2020mulmon,
   title={Learning Object-Centric Representations of Multi-Object Scenes from Multiple Views},
@@ -19,4 +16,18 @@ Please cite the paper if you find the data generator useful:
   booktitle={Advances in Neural Information Processing Systems},
   year={2020}
 }
-```
+    
+@inproceedings{nanbo2021dymon,
+  title={Object-Centric Representation Learning with Generative Spatial-Temporal Factorization},
+  author={Li, Nanbo and Raza, Muhammad Ahmed and Hu, Wenbin and Sun, Zhaole and Fisher, Robert},
+  booktitle={Advances in Neural Information Processing Systems},
+  year={2021}
+}
+   
+@inproceedings{lin2020improving,
+  title={Improving generative imagination in object-centric world models},
+  author={Lin, Zhixuan and Wu, Yi-Fu and Peri, Skand and Fu, Bofeng and Jiang, Jindong and Ahn, Sungjin},
+  booktitle={International Conference on Machine Learning},
+  year={2020}
+}
+```  
