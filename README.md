@@ -1,4 +1,4 @@
-# CLEVR-Object-Centric  
+# CLEVR-Object-Centric (CLROC) Data Generator 
 CLEVR dataset generators for **object-centric representation learning**.   
 
 ## (ALMOST READY ..)
