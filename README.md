@@ -27,7 +27,7 @@ This repository integrates two image data generators for the [CLEVR](https://git
 
 1. Install [Blender 2.79](https://www.blender.org/download/releases/2-79/).  To verify:   
 
-   1.1. Double clicking the blender executable to ensure the success of the installation
+   1.1. Double click the blender executable to ensure the success of the installation
 
    1.2. Open a terminal and run ```echo $BLENDER```, see if it prints out "`<YOUR-PATH>/blender-2.79b/`". If it does NOT, you could manually add the path to the blender executable file to the `~/.bashrc` file as:  
 
