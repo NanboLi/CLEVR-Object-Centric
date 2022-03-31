@@ -39,13 +39,12 @@ Do leave the terminal OPEN!
 
    
 
-3. In the opened terminal, run:
+3. In the opened terminal, run the below cmd to generate data:
 
    ``````
    . ./run_gen.sh
    ``````
-   to generate data. The data will be saved to `./static_scene_generator/output/` as: 
-   
+   The data will be saved to `./static_scene_generator/output/` as: 
    ``````
      static_scene_generator/output/
          ├── images (scene#_view#.png)
