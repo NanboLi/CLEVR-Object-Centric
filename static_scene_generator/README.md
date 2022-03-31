@@ -8,7 +8,7 @@ NeurIPS 2020 (**<font style="color:red">Spotlight</font>**)
 
 ## Usage  
 
-**Pre: ** Open a terminal and navigate it to the root of the repo (i.e. `<YOUR-PATH>/CLEVR-Object-Centric`). Then you will need to add the generator path to Blender python path, this is done by executing:  
+**Pre:** Open a terminal and navigate it to the root of the repo (i.e. `<YOUR-PATH>/CLEVR-Object-Centric`). Then you will need to add the generator path to Blender python path, this is done by executing:  
 
 ``````
 echo $PWD/static_scene_generator >> $BLENDER/2.79/python/lib/python3.5/site-packages/clevr.pth && cd ./static_scene_generator
@@ -50,7 +50,7 @@ Do leave the terminal OPEN!
      static_scene_generator/output/
          ├── images (scene#_view#.png)
          ├── masks  (scene#_view#.npy)
-         └── scenes (meta info for disentanglement evaluations, scene#.json where one ".json" corresponds to multiple ".png" and 					".npy"---one scene charges multiple observations)
+         └── scenes (meta info for disentanglement evaluations, scene#.json where one ".json" corresponds to multiple ".png" and ".npy"---one scene charges multiple observations)
    ``````
 
 
