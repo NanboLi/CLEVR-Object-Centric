@@ -8,21 +8,15 @@ NeurIPS 2021
 
 ## Usage  
 
-**Pre: ** Open a terminal and navigate it to the root of the repo (i.e. `<YOUR-PATH>/CLEVR-Object-Centric`). Then you will need to add the generator path to Blender python path, this is done by executing:  
+**Pre:** Open a terminal and navigate it to the root of the repo (i.e. `<YOUR-PATH>/CLEVR-Object-Centric`). Then you will need to add the generator path to Blender python path, this is done by executing:  
 
 ``````
 echo $PWD/static_scene_generator >> $BLENDER/2.79/python/lib/python3.5/site-packages/clevr.pth && cd ./static_scene_generator
 ``````
-
 Do leave the terminal OPEN!
-
-
-
-## (TO FINISH...)
-
   
-
-
+## (TO FINISH...)
+  
 
 ## Cite
 
