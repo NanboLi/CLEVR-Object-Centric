@@ -1,5 +1,2 @@
-static_scene_generator/output/
-dynamic_scene_generator/output/
+output/
 __pycache__/
-static_scene_generator/__pycache__/
-dynamic_scene_generator/__pycache__/

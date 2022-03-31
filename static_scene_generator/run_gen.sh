@@ -1,9 +1,9 @@
 #!/bin/bash
 
 start_idx=0
-num_scenes_per_batch=1   # Set this to <=200 to avoid subtle run_time errors.
+num_scenes_per_batch=5   # Set this to <=200 to avoid subtle run_time errors.
 counter=0
-num_batches=1    # number of generated scenes = (num_batches - counter) * num_scenes_per_batch
+num_batches=2    # number of generated scenes = (num_batches - counter) * num_scenes_per_batch
 num_views=10
 while [ $counter -lt $num_batches ]
 do
