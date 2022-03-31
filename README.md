@@ -3,7 +3,7 @@ CLEVR Data Generators for **Object-Centric Representation Learning**.
 
 
 <p float="left">
-    <img src="assets/CLROC_showcase.gif" width="800"/>  
+    <img src="assets/CLROC_showcase.gif" width="700"/>  
     <!-- <img src="assets/demo_dynamic.gif" width="400"/>   -->
 </p>  
 
