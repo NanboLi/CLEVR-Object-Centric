@@ -1,19 +1,33 @@
 #!/bin/bash
 
-start_idx=0
-num_scenes_per_batch=5   # Set this to <=200 to avoid subtle run_time errors.
-counter=0
-num_batches=2    # number of generated scenes = (num_batches - counter) * num_scenes_per_batch
-num_views=10
-while [ $counter -lt $num_batches ]
-do
-  ${BLENDER}/blender --background --python render_images_mv.py -- --use_gpu 0 \
-  --start_idx $(($start_idx+$counter * $num_scenes_per_batch)) --num_scenes $num_scenes_per_batch --num_views $num_views \
-  --width 64 --height 64 --min_pixels_per_object 48 --min_objects 3 --max_objects 6 \
-  --properties_json data/properties_customised.json
-  ((counter++))
-  sleep 2
-done
 
-sleep 2
-python postproc_masks.py --num_views $num_views
+# ----- generate the fast-cam-slow-obj partition -----
+vel_cam_level=fast
+vel_obj_level=slow
+for level in 4 5
+do 
+  save_dir=./output/test_${level}/fc_so
+  sleep 1
+  ${BLENDER}/blender --background --python dm_data_generator.py -- --episode 8 --num_frames 40 --use_gpu 1 \
+  -o ${save_dir} --image_size 64 --sim_fps 10 --min_num_objs 2 --max_num_objs 4 --v_cam_level ${vel_cam_level} \
+  --v_obj_level ${vel_obj_level} --level $level --v_azi 6.0 --v_ele 1. --force 8500.
+  sleep 1
+  python utils/make_npy.py --data_dir ${save_dir}
+  sleep 1
+done
+sleep 1
+
+
+# ----- generate slow-cam-fast-obj partition -----
+vel_cam_level=slow
+vel_obj_level=fast
+for level in 4 5
+do 
+  save_dir=./output/test_${level}/sc_fo
+  sleep 1
+  ${BLENDER}/blender --background --python dm_data_generator.py -- --episode 8 --num_frames 40 --use_gpu 1 \
+  -o ${save_dir} --image_size 64 --sim_fps 10 --min_num_objs 2 --max_num_objs 4 --v_cam_level ${vel_cam_level} \
+  --v_obj_level ${vel_obj_level} --level $level --v_azi 3.6 --v_ele 0.5 --force 9000.
+  python utils/make_npy.py --data_dir ${save_dir}
+  sleep 1
+done

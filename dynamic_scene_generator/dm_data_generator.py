@@ -9,6 +9,22 @@ from mathutils import Vector
 import pdb
 
 
+# 12 view grid
+GRID_VIEWS = [
+    [-7.455825740412839, 6.485628262696672, 3.8863830222735407, 2.425673314125832, 0.3747011274137433],
+    [-3.214120366039106, 9.34463170520407, 3.8863830222735407, 1.9020745385275335, 0.3747011274137433],
+    [1.8888059647912339, 9.699748628735776, 3.8863830222735407, 1.3784757629292343, 0.3747011274137433],
+    [6.48562826269667, 7.45582574041284, 3.8863830222735407, 0.8548769873309358, 0.3747011274137433],
+    [9.34463170520407, 3.2141203660391056, 3.8863830222735407, 0.33127821173263683, 0.3747011274137433],
+    [9.699748628735776, -1.8888059647912312, 3.8863830222735407, -0.192320563865662, 0.3747011274137433],
+    [7.45582574041284, -6.48562826269667, 3.8863830222735407, -0.7159193394639608, 0.3747011274137433],
+    [3.2141203660391073, -9.34463170520407, 3.8863830222735407, -1.2395181150622596, 0.3747011274137433],
+    [-1.8888059647912283, -9.699748628735776, 3.8863830222735407, -1.7631168906605583, 0.3747011274137433],
+    [-6.48562826269667, -7.45582574041284, 3.8863830222735407, -2.2867156662588575, 0.3747011274137433],
+    [-9.34463170520407, -3.214120366039108, 3.8863830222735407, -2.810314441857156, 0.3747011274137433],
+    [-9.699748628735776, 1.8888059647912319, 3.8863830222735407, -3.3339132174554553, 0.3747011274137433]
+]
+
 ###################
 # General utils
 ###################
@@ -286,6 +302,7 @@ def init_parser():
     parser = argparse.ArgumentParser()
     # data config
     parser.add_argument('--episode', default=1, type=int, metavar='N', help="number of data samples")
+    parser.add_argument('--start_ep', default=0, type=int, metavar='N', help="init episode index")
     parser.add_argument('--num_frames', default=48, type=int, metavar='N', help='number of frames per data sample')
     parser.add_argument('--sim_fps', default=16, type=int, metavar='N', help='simulation frame rate')
     parser.add_argument('--image_size', default=128, type=int, metavar='N', help='number of frames per data sample')
@@ -371,7 +388,7 @@ def main(args):
 
     # --- start rendering --- #
     print(" ==== START GENERATING DATA ==== ")
-    for ep in range(args.episode):
+    for ep in range(args.start_ep, args.start_ep + args.episode):
         coors = inital_xy_coordinates()
         shape_num = random.randint(args.min_num_objs, args.max_num_objs)
         blender_objects = []
@@ -511,6 +528,19 @@ def main(args):
             bpy.context.scene.render.fps = args.sim_fps
 
             bpy.ops.render.render(write_still=True, use_viewport=True)
+
+            # ----------------------- Render T-V grid images/ mask (for evaluation only) -----------------------------
+            grid_folder = os.path.join(path, 'grid{:04d}'.format(i))
+            os.makedirs(grid_folder, exist_ok=True)
+            for cie, cam_eval in enumerate(GRID_VIEWS):
+                bpy.context.scene.render.filepath = os.path.join(grid_folder, '{:02d}.png'.format(cie))
+                bpy.context.scene.camera.location = Vector(cam_eval[:3])
+                if GET_MASKS:                
+                    render_object_masks(blender_objects,
+                                        pathfix=os.path.join(grid_folder, 'mask{:02d}'.format(cie)))
+                bpy.ops.render.render(write_still=True, use_viewport=True)
+            bpy.context.scene.camera.location = Vector(cam_next[:3])
+            # ----------------------- Render T-V grid images/ mask (for evaluation only) -----------------------------
 
             # update frame (very important)
             bpy.context.scene.update()
