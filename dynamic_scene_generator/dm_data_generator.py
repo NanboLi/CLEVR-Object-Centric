@@ -92,7 +92,7 @@ def inital_xy_coordinates():
 
 def draw_scene(filepath, shape, material, color, scale, coor, index, SHAPES_CONTAINER, MATERIAL_CONTAINER, blender_obj=None):
     # draw shape
-    shape_filename = filepath + '/model/shapes/' + shape + '.blend/Object/' + shape
+    shape_filename = filepath + '/data/shapes/' + shape + '.blend/Object/' + shape
     bpy.ops.wm.append(filename=shape_filename)
     bpy.ops.transform.resize(value=(scale, scale, scale))
     bpy.ops.transform.translate(value=(coor[0], coor[1], scale))
@@ -111,7 +111,7 @@ def draw_scene(filepath, shape, material, color, scale, coor, index, SHAPES_CONT
     set_physics()
 
     # load material
-    material_filename = filepath + '/model/materials/' + material + '.blend/NodeTree/' + material
+    material_filename = filepath + '/data/materials/' + material + '.blend/NodeTree/' + material
     bpy.ops.wm.append(filename=material_filename)
 
     mat_count = len(bpy.data.materials)
@@ -311,13 +311,14 @@ def init_parser():
     parser.add_argument('--max_num_objs', default=4, type=int, metavar='N',
                         help="the least number of additional objects")
 
+    parser.add_argument('--v_azi', default=0., type=float, help="specify azimuth angular velocity")
+    parser.add_argument('--v_ele', default=0., type=float, help="specify elevation angular velocity")
+    parser.add_argument('--force', default=10000., type=float, help="force field to push the initial object, one determinant factor for max obj speed")
     parser.add_argument('--level', default=1, type=int, help="which level of sampler")
-    parser.add_argument('--v_azi', default=0., type=float, help="azimuth angular velocity")
-    parser.add_argument('--v_ele', default=0., type=float, help="elevation angular velocity")
-    parser.add_argument('--force', default=10000., type=float, help="force field to push the initial object")
     parser.add_argument('--v_cam_level', default='slow', type=str, help="v_cam level")
     parser.add_argument('--v_obj_level', default='slow', type=str, help="v_obj level")
-    parser.add_argument("--get_mask", help="whether generate masks or not?", action="store_true", default=False)
+    parser.add_argument("--render_mask", help="render masks or not?", action="store_true", default=False)
+    parser.add_argument("--render_grid", help="render counterfactuals (T-V grid) or not?", action="store_true", default=False)
 
     # parser.add_argument('--debug_coeff', default=0.0, type=float, help="xxx")
 
@@ -325,7 +326,7 @@ def init_parser():
     parser.add_argument('--use_gpu', default=1, type=int, help='which gpu to use')
 
     # path config
-    parser.add_argument("-i", '--input_blender', default='./model/base_scene_mv_bg.blend',
+    parser.add_argument("-i", '--input_blender', default='./data/base_scene_mv_bg.blend',
                         help="path to the input .blender scene base")
     parser.add_argument("-o", '--output_dir', default='./output',
                         help="save the generated data to")
@@ -333,8 +334,9 @@ def init_parser():
 
 
 def main(args):
-    # --- init global variables --- #
-    GET_MASKS = args.get_mask
+    # --- init global variables (CUSTOMISABLE) --- #
+    RENDER_MASKS = args.render_mask
+    RENDER_GRID = args.render_counterfactuals
     SHAPES = ['SmoothCube_v2', 'SmoothCylinder', 'Sphere']
     MATERIAL = ['Rubber', 'MyMetal']
     INDEX_CONTAINER = {'SmoothCube_v2': 0, 'SmoothCylinder': 0, 'Sphere': 0}
@@ -342,6 +344,8 @@ def main(args):
     COLORS = {'Pink': [0.8, 0.3, 0.7, 1.0], 'Red': [0.8, 0.2, 0.2, 1.0], 'Blue': [0.2, 0.2, 0.8, 1.0],
               'Green': [0.2, 0.8, 0.3, 1.0], 'Yellow': [0.7, 0.8, 0.2, 1.0]}
     SCALE = [0.70, 0.75, 0.80]  # [0.6, 0.7, 0.8]
+
+    # ---------------- One can tweek the below distributions for larger/smaller velocity gaps -------------------
     CAM_VEL_SAMPLER = {
         0: {
          'slow': np.asarray([0.  , 0.  , 0.  , 0.1 , 0.2 , 0.4 , 0.2 , 0.1 , 0.  , 0.  , 0.  ]).astype('float32'),
@@ -358,6 +362,14 @@ def main(args):
         3: {
          'slow': np.asarray([0.3 , 0.3 , 0.28, 0.11, 0.01, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ]).astype('float32'),
          'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.01, 0.11, 0.28, 0.3 , 0.3 ]).astype('float32')
+        },
+        4: {
+         'slow': np.asarray([0.4 , 0.4 , 0.2 , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ]).astype('float32'),
+         'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.1 , 0.3 , 0.3 , 0.3 , 0.  ]).astype('float32')
+        },
+        5: {
+         'slow': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0. , 0.5 ]).astype('float32'),
+         'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0. , 0.5 ]).astype('float32')
         }
     }
     OBJ_VEL_SAMPLER = {
@@ -376,6 +388,14 @@ def main(args):
         3: {
         'slow': np.asarray([0.25, 0.38, 0.33, 0.02, 0.02, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ]).astype('float32'),
         'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.02, 0.08, 0.15, 0.35, 0.35, 0.05]).astype('float32')
+        },
+        4: {
+        'slow': np.asarray([0.4 , 0.5 , 0.1 , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.   ]).astype('float32'),
+        'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.1 , 0.25, 0.3 , 0.25, 0.1 , 0.  ]).astype('float32')
+        },
+        5: {
+        'slow': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.5 , 0.5  ]).astype('float32'),
+        'fast': np.asarray([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.5 , 0.5  ]).astype('float32')
         }
     }
     filepath = '.'
@@ -496,9 +516,9 @@ def main(args):
                 for dev in cycles_prefs.devices:
                     dev.use = False
                 if args.use_gpu == 1:
-                    cycles_prefs.devices[1].use = True
-                if args.use_gpu == 0:
                     cycles_prefs.devices[2].use = True
+                if args.use_gpu == 0:
+                    cycles_prefs.devices[1].use = True
             bpy.context.scene.cycles.device = 'GPU'
 
             # set camera location
@@ -519,7 +539,7 @@ def main(args):
 
             ds_dict['views'].append(cam_next)
 
-            if GET_MASKS:
+            if RENDER_MASKS:
                 render_object_masks(blender_objects,
                                     pathfix=os.path.join(path, 'mask{:04d}'.format(i)))
                                     # pathfix=output_mask+'_{:02d}'.format(vid))
@@ -530,17 +550,18 @@ def main(args):
             bpy.ops.render.render(write_still=True, use_viewport=True)
 
             # ----------------------- Render T-V grid images/ mask (for evaluation only) -----------------------------
-            grid_folder = os.path.join(path, 'grid{:04d}'.format(i))
-            os.makedirs(grid_folder, exist_ok=True)
-            for cie, cam_eval in enumerate(GRID_VIEWS):
-                bpy.context.scene.render.filepath = os.path.join(grid_folder, '{:02d}.png'.format(cie))
-                bpy.context.scene.camera.location = Vector(cam_eval[:3])
-                if GET_MASKS:                
-                    render_object_masks(blender_objects,
-                                        pathfix=os.path.join(grid_folder, 'mask{:02d}'.format(cie)))
-                bpy.ops.render.render(write_still=True, use_viewport=True)
-            bpy.context.scene.camera.location = Vector(cam_next[:3])
-            # ----------------------- Render T-V grid images/ mask (for evaluation only) -----------------------------
+            if RENDER_GRID:
+                grid_folder = os.path.join(path, 'grid{:04d}'.format(i))
+                os.makedirs(grid_folder, exist_ok=True)
+                for cie, cam_eval in enumerate(GRID_VIEWS):
+                    bpy.context.scene.render.filepath = os.path.join(grid_folder, '{:02d}.png'.format(cie))
+                    bpy.context.scene.camera.location = Vector(cam_eval[:3])
+                    if RENDER_MASKS:                
+                        render_object_masks(blender_objects,
+                                            pathfix=os.path.join(grid_folder, 'mask{:02d}'.format(cie)))
+                    bpy.ops.render.render(write_still=True, use_viewport=True)
+                bpy.context.scene.camera.location = Vector(cam_next[:3])
+            # ----------------------------------------------------
 
             # update frame (very important)
             bpy.context.scene.update()
